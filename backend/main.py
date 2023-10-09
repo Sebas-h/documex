@@ -1,7 +1,7 @@
 import os
 
 from flask import Flask, jsonify, render_template_string, send_from_directory, request
-from backend.github_emojis import GITHUB_EMOJIS_MARKUP_TO_UNICODE
+from github_emojis import GITHUB_EMOJIS_MARKUP_TO_UNICODE
 from md_helpers import (
     add_ids_to_headers,
     extract_headers_on_page_nav,
