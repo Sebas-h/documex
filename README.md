@@ -2,7 +2,7 @@
 
 > Documentation Explorer
 
-![img]("./assets/documex_intro.png")
+![img](./assets/documex_intro.png)
 
 1. Supply backend a local directory path with arbitrarily nested markdown files
 2. Start up frontend which will
