@@ -10,6 +10,14 @@ from cmarkgfm.cmark import Options
 import markdown
 import pymdownx.emoji
 
+# Directories to ignore
+IGNORE_DIRS = [
+    ".git",
+    "node_modules",
+    ".venv",
+    "venv",
+]
+
 
 class FileTreeNodeFile(TypedDict):
     type: Literal["file"]
@@ -217,7 +225,13 @@ def _list_markdown_files_fn(base_dir: str, path: str) -> FileTree:
             }
             structure.append(md_file)
         # If it's a directory, process it recursively
-        elif os.path.isdir(full_path):
+        elif os.path.isdir(full_path) and entry not in IGNORE_DIRS:
+            print(
+                full_path,
+                os.path.relpath(full_path, start=base_dir),
+                os.path.basename(full_path),
+                entry,
+            )
             subdir_structure = _list_markdown_files_fn(base_dir, full_path)
             if subdir_structure:  # Only add non-empty subdirectories
                 rel_path = os.path.relpath(full_path, start=base_dir)
