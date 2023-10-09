@@ -162,3 +162,9 @@ cython_debug/
 backend/_rnd.py
 
 .DS_Store
+
+# Doesn't seem possible to upload the `test_repos/`, not sure why
+# perhaps because it contains repositories with a particular license
+# and you're not allowed to upload those as part of your own repo...?
+# Seems weird. More likely it's just bc it's a large directory (~15MB)
+test_repos/
