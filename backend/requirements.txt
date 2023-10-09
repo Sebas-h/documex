@@ -1,0 +1,11 @@
+# Web server
+Flask
+#flask-cors
+
+# HTML parsing
+beautifulsoup4
+
+# Markdown converting
+cmarkgfm
+markdown
+pymdown-extensions
