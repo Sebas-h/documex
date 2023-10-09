@@ -51,3 +51,4 @@ documentation exists.
     ID in the URL, e.g. `localhost:3000/path/to/file.md#_header2`, it should
     scroll to this header ID just as it would when clicking on an on-page header
     from the right-sidebar when the content is already loaded.
+- [ ] (**FE**) Make [GitHub task lists](https://docs.github.com/en/get-started/writing-on-github/working-with-advanced-formatting/about-task-lists) display properly
