@@ -1,0 +1,2 @@
+start:
+	./start-both.sh
