@@ -111,6 +111,7 @@ def markdown_to_html_v2(md: str) -> str:
 
 def add_ids_to_headers(html_content):
     soup = BeautifulSoup(html_content, "html.parser")
+    header_ids_count = {}
     for header in soup.find_all(["h1", "h2", "h3"]):
         # Generate ID
         header_id = header.get_text()
@@ -120,8 +121,21 @@ def add_ids_to_headers(html_content):
         header_id = "".join(
             ch if ch.isalnum() or ch == "-" else "-" for ch in header_id
         )
-        # Add leading `_` because CSS selectors cannot start with a number
-        header["id"] = f"_{header_id}"
+        # Add leading `_` because CSS selectors cannot start with a number but
+        # a header's text might
+        header_id = f"_{header_id}"
+
+        # Update header IDs count
+        key = header_id
+        header_ids_count[key] = (
+            0 if key not in header_ids_count else header_ids_count[key] + 1
+        )
+        # If count for header_id > 0 prefix the count number to the ID to make it unique
+        if header_ids_count[key] > 0:
+            header_id += f"_{header_ids_count[key]}"
+
+        # Set header id
+        header["id"] = header_id
     return str(soup)
 
 
