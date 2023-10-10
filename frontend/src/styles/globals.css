@@ -47,7 +47,7 @@ body {
 /* COPY CODE BLOCK TO CLIPBOARD */
 /******************************************************************************/
 /* Add copy button inside <pre>, should appear in the top-right of the <pre> */
-pre[lang] {
+pre {
   position: relative;
 }
 button.copy-btn {
@@ -58,9 +58,15 @@ button.copy-btn {
 /* Add effect to indicate copy to clipboard was successful */
 /* Define the animation */
 @keyframes buttonCopyEffect {
-  0% { background-color: initial; }
-  50% { background-color: green; }
-  100% { background-color: initial; }
+  0% {
+    background-color: initial;
+  }
+  15% {
+    background-color: green;
+  }
+  100% {
+    background-color: initial;
+  }
 }
 /* Apply the animation to a class */
 .copy-effect {

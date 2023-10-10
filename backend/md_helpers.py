@@ -268,8 +268,8 @@ def fix_p_in_li_with_checkbox(html: str) -> str:
 def add_copy_buttons_inside_pre(html_content):
     soup = BeautifulSoup(html_content, "html.parser")
 
-    # Find all <pre lang="LANG"> elements
-    for pre in soup.find_all("pre", lang=True):
+    # Find all <pre> elements
+    for pre in soup.find_all("pre"):
         # Create a new button element
         button = soup.new_tag("button")
         button.string = "Copy"
