@@ -31,17 +31,21 @@ documentation exists.
 
 - [x] (**BE**) Add option (and probably as default) to ignore directories like
     `.git/`, `node_modules/`, `.venv/`.
-        - Partially done. Perhaps making this configurable would be nice
-            as it is hardcoded right now
-- [ ] (**FE**) Make the loading/selected/fetching an MD file path based
+    - 🟠 Partially done. Perhaps making this configurable would be nice
+        as it is hardcoded right now
+- [x] (**FE**) Make the loading/selected/fetching an MD file path based
     - i.e. now `{filepath: "dir_1/dir_2/file.md"}` is sent in a POST request
         make this a GET request with URL `[localhost:3030]/dir_1/dir_2/file.md`
     - This will make reloading the page have the expected behavior as well
     - Perhaps adding a button to clear the selected file would be nice
-    - Also when refreshing the browser would be nice if it didn't try to always
+    - Also when refreshing the browser it would be nice if it didn't try to always
         fetch the file again (and list of files for the matter) each time but
         rather use some kind of cache we keep locally (in localStorage perhaps)
         such that we see some content faster!
+    - 🟠 Pretty much done except for using a cached version on browser reload,
+        having a button to clear the selected file,
+        and the file being visible in the file tree sidebar on browser reload
+        (also it doesn't make a GET request either to fetch the file, should be fine though)
 - [ ] (**BE/FE**) Investigate using WebSockets to be able receive updates from the server
     in case the markdown file tree has changed and when the current selected
     md file's content has changed, send the new state/version so it can be
