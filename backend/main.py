@@ -1,4 +1,5 @@
 import os
+from urllib.parse import unquote
 
 from flask import Flask, jsonify, render_template_string, send_from_directory, request
 from github_emojis import GITHUB_EMOJIS_MARKUP_TO_UNICODE
@@ -19,31 +20,31 @@ app = Flask(__name__, static_folder=".", static_url_path="")
 
 # Directory containing markdown files
 # MARKDOWN_DIR = "./"  # You can change this to the desired directory path
-MARKDOWN_DIR = "../test_repos"
+MARKDOWN_DIR = os.getenv("DOC_DIR", "../example_dir")
 
 
-@app.route("/")
-def serve_index():
-    """Serve the index.html file."""
-    return send_from_directory(".", "index.html")
+# @app.route("/")
+# def serve_index():
+#     """Serve the index.html file."""
+#     return send_from_directory(".", "index.html")
 
 
-@app.route("/styles.css")
-def serve_styles():
-    """Serve the styles.css file."""
-    return send_from_directory(".", "styles.css")
+# @app.route("/styles.css")
+# def serve_styles():
+#     """Serve the styles.css file."""
+#     return send_from_directory(".", "styles.css")
 
 
-@app.route("/github-markdown.css")
-def serve_gh_styles():
-    """Serve the styles.css file."""
-    return send_from_directory(".", "github-markdown.css")
+# @app.route("/github-markdown.css")
+# def serve_gh_styles():
+#     """Serve the styles.css file."""
+#     return send_from_directory(".", "github-markdown.css")
 
 
-@app.route("/script.js")
-def serve_script():
-    """Serve the script.js file."""
-    return send_from_directory(".", "script.js")
+# @app.route("/script.js")
+# def serve_script():
+#     """Serve the script.js file."""
+#     return send_from_directory(".", "script.js")
 
 
 @app.route("/list")
@@ -81,6 +82,10 @@ def serve_markdown_as_html():
         return "No filename given", 400
 
     filename = data.get("filename")
+
+    # Remove url encoded characters like spaces
+    # Necessary as the content of the body is taken from a URL at the client
+    filename = unquote(filename)
 
     if not filename:
         return "Filename not provided", 400

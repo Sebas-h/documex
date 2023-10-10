@@ -140,7 +140,7 @@ export default function MainLayoutV2({
                     icon="folder-tree"
                     onClick={handleRevealFileOnClick}
                   />
-                  <span className="truncate">{pathname}</span>
+                  <span className="truncate">{decodeURI(pathname)}</span>
                 </>
               )}
             </div>
