@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { MouseEventHandler, ReactElement } from "react";
 
 // See:
@@ -23,6 +24,7 @@ export interface ButtonIconProps {
   // size?: "small" | "medium" | "large";
   icon: IconType;
   onClick?: MouseEventHandler<HTMLButtonElement>;
+  href?: string;
 }
 
 // Src: https://fontawesome.com/search?q=expand&o=r&m=free
@@ -172,13 +174,23 @@ const getIcon = (icon: IconType): ReactElement => {
 
 export function ButtonIcon(props: ButtonIconProps) {
   // See: https://flowbite.com/docs/components/buttons
+
+  const buttonClasses = `p-1 text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-200 font-medium rounded-lg text-sm dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700 z-50`;
+
+  if (!props.href)
+    return (
+      <button type="button" className={buttonClasses} onClick={props.onClick}>
+        {getIcon(props.icon)}
+      </button>
+    );
   return (
-    <button
+    <Link
       type="button"
-      className={`${"p-1"} text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-200 font-medium rounded-lg text-sm dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700 z-50`}
-      onClick={props.onClick}
+      className={buttonClasses}
+      href={props.href}
+      target="_blank"
     >
       {getIcon(props.icon)}
-    </button>
+    </Link>
   );
 }

@@ -145,9 +145,10 @@ export default function MainLayoutV2({
               )}
             </div>
             <div className="flex flex-row gap-1">
-              <Link href="https://github.com/sebas-h/documex" target="_blank">
-                <ButtonIcon icon="github" />
-              </Link>
+              <ButtonIcon
+                icon="github"
+                href="https://github.com/sebas-h/documex"
+              />
               <ButtonIcon icon="circle-half-stroke" />
               <ButtonIcon
                 icon="sidebar-toggle"
