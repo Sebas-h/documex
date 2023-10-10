@@ -43,8 +43,9 @@ export default function Page() {
       setContent(data.html);
       dispatch({ type: "setSelectedFileHeaders", data: data.headers });
     };
-    if (!pathname) return;
-    dataFetch(pathname.slice(1));
+    const pname = pathname.slice(1);
+    if (!pname) return;
+    dataFetch(pname);
   }, [setContent, pathname]);
 
   useEffect(() => {
@@ -74,7 +75,7 @@ export default function Page() {
           setRightSidebarHidden(!rightSidebarHidden),
         mainContent: content ? (
           <div dangerouslySetInnerHTML={{ __html: content }}></div>
-        ) : (!pathname || pathname == "/") ? (
+        ) : !pathname || pathname == "/" ? (
           <div>No file selected</div>
         ) : (
           <div>404 - File Not Found</div>
