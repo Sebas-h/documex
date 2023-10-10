@@ -11,6 +11,7 @@ from md_helpers import (
     markdown_to_html_v2,
     modify_image_paths,
     multi_replace,
+    add_copy_buttons_inside_pre,
 )
 
 app = Flask(__name__, static_folder=".", static_url_path="")
@@ -109,6 +110,9 @@ def serve_markdown_as_html():
 
     # Remove <p> in <li> where <p> preceeded by <input type="checkbox">
     html_content = fix_p_in_li_with_checkbox(html_content)
+
+    # Add copy buttons to <pre lang="LANG"> elements
+    html_content = add_copy_buttons_inside_pre(html_content)
 
     # Get headers
     headers = extract_headers_on_page_nav(html_content)

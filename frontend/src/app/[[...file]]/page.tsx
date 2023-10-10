@@ -47,6 +47,22 @@ export default function Page() {
     dataFetch(pathname.slice(1));
   }, [setContent, pathname]);
 
+  useEffect(() => {
+    const copyButtons = document.querySelectorAll("button.copy-btn");
+    copyButtons.forEach((btn) => {
+      btn.addEventListener("click", async () => {
+        const code = btn.parentElement?.querySelector("code")?.innerText;
+        if (!code) return;
+        await navigator.clipboard.writeText(code);
+        if (btn.classList.contains("copy-effect")) {
+          btn.classList.remove("copy-effect");
+          await sleep(10);
+        }
+        btn.classList.add("copy-effect");
+      });
+    });
+  }, [content]);
+
   return (
     <Main
       props={{

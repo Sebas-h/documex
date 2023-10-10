@@ -226,12 +226,6 @@ def _list_markdown_files_fn(base_dir: str, path: str) -> FileTree:
             structure.append(md_file)
         # If it's a directory, process it recursively
         elif os.path.isdir(full_path) and entry not in IGNORE_DIRS:
-            print(
-                full_path,
-                os.path.relpath(full_path, start=base_dir),
-                os.path.basename(full_path),
-                entry,
-            )
             subdir_structure = _list_markdown_files_fn(base_dir, full_path)
             if subdir_structure:  # Only add non-empty subdirectories
                 rel_path = os.path.relpath(full_path, start=base_dir)
@@ -268,4 +262,22 @@ def fix_p_in_li_with_checkbox(html: str) -> str:
             for p in li.find_all("p"):
                 p.replace_with(p.get_text())  # Replace <p> with its text content
     # print(soup.prettify())
+    return str(soup)
+
+
+def add_copy_buttons_inside_pre(html_content):
+    soup = BeautifulSoup(html_content, "html.parser")
+
+    # Find all <pre lang="LANG"> elements
+    for pre in soup.find_all("pre", lang=True):
+        # Create a new button element
+        button = soup.new_tag("button")
+        button.string = "Copy"
+        button[
+            "class"
+        ] = "copy-btn"  # Add a class for potential styling or JS targeting
+
+        # Append the button inside the <pre> element
+        pre.append(button)
+
     return str(soup)

@@ -35,7 +35,34 @@ body {
 /* @import "./github-markdown.css"; */
 
 /* Override dark mode prose unordered list marker color */
-.prose :where(ul > li):not(:where([class~="not-prose"],[class~="not-prose"] *))::marker {
+.prose
+  :where(ul > li):not(
+    :where([class~="not-prose"], [class~="not-prose"] *)
+  )::marker {
   /* color: var(--tw-prose-bullets); */
   color: var(--tw-prose-counters);
+}
+
+/******************************************************************************/
+/* COPY CODE BLOCK TO CLIPBOARD */
+/******************************************************************************/
+/* Add copy button inside <pre>, should appear in the top-right of the <pre> */
+pre[lang] {
+  position: relative;
+}
+button.copy-btn {
+  position: absolute !important;
+  top: 0;
+  right: 5px;
+}
+/* Add effect to indicate copy to clipboard was successful */
+/* Define the animation */
+@keyframes buttonCopyEffect {
+  0% { background-color: initial; }
+  50% { background-color: green; }
+  100% { background-color: initial; }
+}
+/* Apply the animation to a class */
+.copy-effect {
+  animation: buttonCopyEffect 2s; /* Adjust the duration as needed */
 }
