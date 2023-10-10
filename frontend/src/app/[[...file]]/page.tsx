@@ -74,8 +74,10 @@ export default function Page() {
           setRightSidebarHidden(!rightSidebarHidden),
         mainContent: content ? (
           <div dangerouslySetInnerHTML={{ __html: content }}></div>
+        ) : (!pathname || pathname == "/") ? (
+          <div>No file selected</div>
         ) : (
-          <div>No markdown file selected</div>
+          <div>404 - File Not Found</div>
         ),
         revealFileOnClick: async () => {
           if (!selectedFile) return;
