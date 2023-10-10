@@ -12,6 +12,7 @@ from md_helpers import (
     modify_image_paths,
     multi_replace,
     add_copy_buttons_inside_pre,
+    sort_file_tree,
 )
 
 app = Flask(__name__, static_folder=".", static_url_path="")
@@ -52,7 +53,7 @@ def list_markdown_files():
     # of a `OrderedDict`
     # js = json.dumps(sort_dir_dict(list_markdown_files_fn(MARKDOWN_DIR)))
     # TODO: fix the sort_dir_dict for this `list_..._v2()` fn return value
-    md_files = list_markdown_files_fn(MARKDOWN_DIR)
+    md_files = sort_file_tree(list_markdown_files_fn(MARKDOWN_DIR))
     response = app.json.response(md_files)
     return response
 

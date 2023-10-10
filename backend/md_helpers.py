@@ -1,6 +1,6 @@
 from collections import OrderedDict
 import os
-from typing import Literal, TypedDict
+from typing import Literal, Sequence, TypedDict
 from typing_extensions import Self
 import re
 
@@ -31,10 +31,10 @@ class FileTreeNodeDir(TypedDict):
     name: str
     path: str
     id: str
-    subtree: list[FileTreeNodeFile | Self]
+    subtree: Sequence[FileTreeNodeFile | Self]
 
 
-FileTree = list[FileTreeNodeFile | FileTreeNodeDir]
+FileTree = Sequence[FileTreeNodeFile | FileTreeNodeDir]
 
 
 def sort_dir_dict(d: dict):
@@ -281,3 +281,24 @@ def add_copy_buttons_inside_pre(html_content):
         pre.append(button)
 
     return str(soup)
+
+
+def sort_file_tree(ft: FileTree) -> FileTree:
+    """Sort file tree. Firstly by directory first and secondly alphabetically
+
+    Args:
+        ft (FileTree): file tree to sort
+
+    Returns:
+        FileTree: sorted file tree
+    """
+    sorted_ft: FileTree = []
+    sorted_level = sorted(ft, key=lambda elem: (elem["type"], elem["name"]))
+    for node in sorted_level:
+        if node["type"] == "directory":
+            sorted_subtree = sort_file_tree(node["subtree"])
+            sd: FileTreeNodeDir = {**node, "subtree": sorted_subtree}
+            sorted_ft.append(sd)
+        else:
+            sorted_ft.append(node)
+    return sorted_ft
