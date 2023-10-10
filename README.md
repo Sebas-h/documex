@@ -16,13 +16,16 @@ Or separately as:
 1. `cd backend && python main.py`
 2. `cd frontend && npm run dev`
 
-### `test_repos/`
+### `example_dir/`
 
-This directory contains (relatively small) open-source repositories which all
-contain markdown files at varying levels inside the respective repos.
-This is a good directory to try out the (somewhat) intended purpose of this
-application where you have a lot of repos with documentation (as markdown files)
-scattered about.
+
+This directory contains a small set of files and directories to test the
+application with.
+It contains markdown files at varying levels in the file tree, alongside
+other files.
+
+This hopefully shows the (somewhat) intended purpose of this application where
+you have a lot of repos with documentation (as markdown files) scattered about.
 This application should make it a little bit nicer to navigate and discover
 these markdown files to give you a better overview of where which bit of
 documentation exists.
@@ -58,3 +61,5 @@ documentation exists.
     scroll to this header ID just as it would when clicking on an on-page header
     from the right-sidebar when the content is already loaded.
 - [ ] (**FE**) Make [GitHub task lists](https://docs.github.com/en/get-started/writing-on-github/working-with-advanced-formatting/about-task-lists) display properly
+- [ ] (**FE**) Add a search functionality to quickly find and select a file
+    - This can be done in the sidebar or in a modal popup, the latter will probably feel nicer
