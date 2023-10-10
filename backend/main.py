@@ -123,8 +123,7 @@ def serve_markdown_as_html():
     # Get headers
     headers = extract_headers_on_page_nav(html_content)
 
-    # return render_template_string(html_content)
-    return jsonify({"html": render_template_string(html_content), "headers": headers})
+    return jsonify({"html": html_content, "headers": headers})
 
 
 if __name__ == "__main__":
