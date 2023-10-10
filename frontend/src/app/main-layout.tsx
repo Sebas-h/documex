@@ -25,6 +25,7 @@ import {
 } from "./_helpers/utils";
 import { useRouter, usePathname, useSearchParams } from "next/navigation";
 import { ButtonIcon } from "./_components/button";
+import Link from "next/link";
 
 const sleep = (ms: number) => new Promise((res) => setTimeout(res, ms));
 
@@ -144,6 +145,9 @@ export default function MainLayoutV2({
               )}
             </div>
             <div className="flex flex-row gap-1">
+              <Link href="https://github.com/sebas-h/documex" target="_blank">
+                <ButtonIcon icon="github" />
+              </Link>
               <ButtonIcon icon="circle-half-stroke" />
               <ButtonIcon
                 icon="sidebar-toggle"
