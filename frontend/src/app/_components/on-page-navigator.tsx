@@ -41,6 +41,7 @@ const RecursiveOnPageNav = ({ props }: RecursiveOnPageNavProps) => {
               nodeClasses[props.treeLevel],
               "hover:bg-sky-700 cursor-pointer",
             ].join(" ")}
+            title={header.name.trim()}
             // onClick={() => {
             //   // See: https://codefrontend.com/scroll-to-element-in-react/
             //   props.mdRef?.current

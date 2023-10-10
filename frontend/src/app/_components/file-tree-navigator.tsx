@@ -215,6 +215,7 @@ function RecursiveFileTree({ props }: RecursiveFileTreeProps) {
               <span
                 className="grow hover:bg-sky-700"
                 onClick={handleDirClick(treeNode)}
+                title={treeNode.name.trim()}
               >
                 <span
                   className={styleClasses.treeNodePrefix}
