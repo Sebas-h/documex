@@ -1,5 +1,6 @@
 from collections import OrderedDict
 import os
+from pathlib import Path
 from typing import Literal, Sequence, TypedDict
 from typing_extensions import Self
 import re
@@ -180,40 +181,18 @@ def extract_headers_on_page_nav(html_content):
     return navigation_items
 
 
-# def extract_headers(level, s):
-#     headers = []
-#     tag_name = f"h{level}"
-#     for header in s.find_all(tag_name, recursive=False):
-#         header_id = header.get_text().strip().lower().replace(" ", "-")
-#         header_id = "".join(ch if ch.isalnum() or ch == "-" else "-" for ch in header_id)
-#         header["id"] = header_id
-#         children = None
-#         if level < 3:  # Check for h2 under h1 and h3 under h2
-#             # print(header.find_next_sibling())
-#             # children = extract_headers(level + 1, header.find_next_sibling())
-#             children = extract_headers(level + 1, s)
-#         headers.append({
-#             "header": header.get_text(),
-#             "children": children
-#         })
-#     return headers if headers else None
-# def add_ids_to_headers(html_content):
-#     soup = BeautifulSoup(html_content, "html.parser")
-#     headers = extract_headers(1, soup)
-#     return str(soup), headers
+def prepend_subdir(path: Path, subdir_name: Path) -> str:
+    relative_path_str = Path(str(path)[1:]) if path.is_absolute() else path
+    return str(subdir_name / relative_path_str)
 
 
-def modify_image_paths(html_content: str, file_path: str, markdown_dir: str) -> str:
+def modify_image_paths(html_content: str, prepend_path: Path) -> str:
     soup = BeautifulSoup(html_content, "html.parser")
     for img_tag in soup.find_all("img"):
-        src = img_tag["src"]
-        if src.startswith("./") or (not src.startswith("/") and "://" not in src):
-            # Construct the new path relative to MARKDOWN_DIR
-            relative_dir = os.path.dirname(file_path)
-            new_src = os.path.relpath(
-                os.path.join(relative_dir, src), start=markdown_dir
-            )
-            img_tag["src"] = os.path.join(markdown_dir, new_src)
+        src: str = img_tag["src"]
+        if "://" not in src:
+            new_src = prepend_subdir(Path(src), prepend_path)
+            img_tag["src"] = "/" + new_src
     return str(soup)
 
 

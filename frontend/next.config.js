@@ -16,6 +16,12 @@ const nextConfig = {
         source: "/file",
         destination: "http://localhost:3030/file",
       },
+      {
+        // Using a 'magic'/short-uuid prefix here, if a directory from which we want to get
+        // a md/doc file ever has the same name we're in trouble [:
+        source: "/asset0d685bb/:path*",
+        destination: "http://localhost:3030/asset/:path*",
+      },
     ];
   },
 };

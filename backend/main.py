@@ -1,7 +1,14 @@
 import os
+from pathlib import Path
 from urllib.parse import unquote
 
-from flask import Flask, jsonify, render_template_string, send_from_directory, request
+from flask import (
+    Flask,
+    abort,
+    jsonify,
+    send_from_directory,
+    request,
+)
 from github_emojis import GITHUB_EMOJIS_MARKUP_TO_UNICODE
 from md_helpers import (
     add_ids_to_headers,
@@ -9,7 +16,6 @@ from md_helpers import (
     fix_p_in_li_with_checkbox,
     list_markdown_files_fn,
     markdown_to_html,
-    markdown_to_html_v2,
     modify_image_paths,
     multi_replace,
     add_copy_buttons_inside_pre,
@@ -22,29 +28,30 @@ app = Flask(__name__, static_folder=".", static_url_path="")
 # MARKDOWN_DIR = "./"  # You can change this to the desired directory path
 MARKDOWN_DIR = os.getenv("DOC_DIR", "../example_dir")
 
-
-# @app.route("/")
-# def serve_index():
-#     """Serve the index.html file."""
-#     return send_from_directory(".", "index.html")
-
-
-# @app.route("/styles.css")
-# def serve_styles():
-#     """Serve the styles.css file."""
-#     return send_from_directory(".", "styles.css")
+# Used as unique route to serve local assets (i.e. images) from
+# (I'm this isn't the best solution but it works for now at least, should be
+# looked at again in the future though)
+MAGIC_ASSET_URL_PREFIX = "asset0d685bb"
 
 
-# @app.route("/github-markdown.css")
-# def serve_gh_styles():
-#     """Serve the styles.css file."""
-#     return send_from_directory(".", "github-markdown.css")
+@app.route(f"/asset/<path:filename>", methods=["GET"])
+def serve_file(filename: str):
+    # Remove url encoded characters like spaces
+    # Necessary as the content of the body is taken from a URL at the client
+    filename = unquote(filename)
 
+    if not filename:
+        return "Filename not provided", 400
 
-# @app.route("/script.js")
-# def serve_script():
-#     """Serve the script.js file."""
-#     return send_from_directory(".", "script.js")
+    if ".." in filename or filename.startswith("/"):
+        # Prevent directory traversal
+        return "Invalid filename", 400
+
+    try:
+        # Use safe join to ensure it's within the directory and not navigating out
+        return send_from_directory(MARKDOWN_DIR, filename, as_attachment=True)
+    except FileNotFoundError:
+        abort(404)
 
 
 @app.route("/list")
@@ -112,7 +119,9 @@ def serve_markdown_as_html():
     html_content = add_ids_to_headers(html_content)
 
     # Modify image paths using BeautifulSoup
-    html_content = modify_image_paths(html_content, file_path, MARKDOWN_DIR)
+    pfn = Path(filename)
+    basedir = Path(pfn.parts[0]) if len(pfn.parts) > 1 else Path()
+    html_content = modify_image_paths(html_content, MAGIC_ASSET_URL_PREFIX / basedir)
 
     # Remove <p> in <li> where <p> preceeded by <input type="checkbox">
     html_content = fix_p_in_li_with_checkbox(html_content)

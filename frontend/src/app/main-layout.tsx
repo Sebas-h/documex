@@ -29,7 +29,7 @@ import Link from "next/link";
 
 const sleep = (ms: number) => new Promise((res) => setTimeout(res, ms));
 
-export default function MainLayoutV2({
+export default function MainLayout({
   children,
 }: {
   children: React.ReactNode;
@@ -43,7 +43,6 @@ export default function MainLayoutV2({
   const [leftSidebarHidden, setLeftSidebarHidden] = useState<boolean>(false);
   const [rightSidebarHidden, setRightSidebarHidden] = useState<boolean>(false);
   const [filetree, setFiletree] = useState<FileTree>();
-  // const [markdownContent, setMarkdownContent] = useState<string>();
   const [onPageNav, setOnPageNav] = useState<OnPageNavigation[]>();
   const mdRef = useRef<HTMLDivElement | null>(null);
 
