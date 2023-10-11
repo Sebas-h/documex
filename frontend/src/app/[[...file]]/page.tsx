@@ -1,29 +1,17 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { FileTreeNodeFile } from "../_components/file-tree-navigator";
 import { OnPageNavigation } from "../_components/on-page-navigator";
 import { useStateStoreDispatch } from "../_context/state-store-context";
-import Main from "../_page-components/main";
-import { buildPaths, getFilePathDirParts } from "../_helpers/utils";
+import { addEventListenerOnStringHTML } from "../_helpers/utils";
 import { usePathname } from "next/navigation";
-
-const sleep = (ms: number) => new Promise((res) => setTimeout(res, ms));
+import { ButtonIcon } from "../_components/button";
 
 export default function Page() {
   const pathname = usePathname();
-  const [selectedFile, setSelectedFile] = useState<FileTreeNodeFile | null>(
-    null
-  );
-  // TODO: Think about inverting this, i.e. only nodes in this list are shown
-  // In that case an empty list will mean the directory tree is fully collapsed
-  const [nodesToHide, setNodesToHide] = useState<string[]>([]);
-  const [leftSidebarHidden, setLeftSidebarHidden] = useState<boolean>(false);
-  const [rightSidebarHidden, setRightSidebarHidden] = useState<boolean>(false);
-  const mdRef = useRef<HTMLDivElement | null>(null);
-
+  const containerRef = useRef<HTMLDivElement | null>(null);
+  const contentRef = useRef<HTMLDivElement | null>(null);
   const [content, setContent] = useState<string>("");
-
   const dispatch = useStateStoreDispatch();
 
   useEffect(() => {
@@ -40,59 +28,38 @@ export default function Page() {
         html: string;
         headers: OnPageNavigation[];
       };
+      // Create Document with copy button event listeners
+      const doc = addEventListenerOnStringHTML(data.html);
+      // Append content doc to Virutal DOM using `ref`
+      Array.from(doc.body.childNodes).forEach((child) => {
+        contentRef?.current?.appendChild(child);
+      });
+      // Set html content on local state (XXX: this might be redundant?)
       setContent(data.html);
       dispatch({ type: "setSelectedFileHeaders", data: data.headers });
     };
     const pname = pathname.slice(1);
     if (!pname) return;
     dataFetch(pname);
-  }, [setContent, pathname]);
-
-  useEffect(() => {
-    const copyButtons = document.querySelectorAll("button.copy-btn");
-    copyButtons.forEach((btn) => {
-      btn.addEventListener("click", async () => {
-        const code = btn.parentElement?.querySelector("code")?.innerText;
-        if (!code) return;
-        await navigator.clipboard.writeText(code);
-        if (btn.classList.contains("copy-effect")) {
-          btn.classList.remove("copy-effect");
-          await sleep(10);
-        }
-        btn.classList.add("copy-effect");
-      });
-    });
-  }, [content]);
+  }, [setContent, pathname, contentRef]);
 
   return (
-    <Main
-      props={{
-        mdRef,
-        selectedFile,
-        leftSideBarToggleOnClick: () =>
-          setLeftSidebarHidden(!leftSidebarHidden),
-        rightSideBarToggleOnClick: () =>
-          setRightSidebarHidden(!rightSidebarHidden),
-        mainContent: content ? (
-          <div dangerouslySetInnerHTML={{ __html: content }}></div>
-        ) : !pathname || pathname == "/" ? (
-          <div>No file selected</div>
-        ) : (
-          <div>404 - File Not Found</div>
-        ),
-        revealFileOnClick: async () => {
-          if (!selectedFile) return;
-          const subPaths = buildPaths(getFilePathDirParts(selectedFile));
-          setNodesToHide(nodesToHide.filter((n) => !subPaths.includes(n)));
-          // TODO: quite ugly to put in a sleep here
-          //  Can we somehow trigger the `.scrollIntoView` after the
-          //  re-render that `setNodesToHide` triggers has finished?
-          await sleep(10);
-          document
-            .querySelector(`[data-id="${selectedFile.id}"]`)
-            ?.scrollIntoView({ block: "center" });
-        },
-      }}
-    />
+    <div
+      ref={containerRef}
+      className="relative grow-1 overflow-auto bg-gray-800 rounded-md m-2 p-6"
+    >
+      {content && (
+        <div className="sticky top-0 float-right z-50">
+          <ButtonIcon
+            icon="arrow-up"
+            onClick={() => containerRef?.current?.scrollTo({ top: 0 })}
+          />
+        </div>
+      )}
+      <div
+        className="markdown-body prose dark:prose-invert max-w-none"
+        ref={contentRef}
+      ></div>
+    </div>
   );
 }

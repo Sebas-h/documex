@@ -78,3 +78,25 @@ export function getFileByPathname(
   // If no file is found, return null
   return null;
 }
+
+export const sleep = (ms: number) => new Promise((res) => setTimeout(res, ms));
+
+export function addEventListenerOnStringHTML(html: string): Document {
+  const parser = new DOMParser();
+  const doc = parser.parseFromString(html, "text/html");
+  const copyButtons = doc.querySelectorAll("button.copy-btn");
+  copyButtons.forEach((btn) => {
+    btn.addEventListener("click", async () => {
+      const code = btn.parentElement?.querySelector("code")?.innerText;
+      if (!code) return;
+      await navigator.clipboard.writeText(code);
+      if (btn.classList.contains("copy-effect")) {
+        btn.classList.remove("copy-effect");
+        await sleep(10);
+      }
+      btn.classList.add("copy-effect");
+    });
+  });
+
+  return doc;
+}
