@@ -22,8 +22,6 @@ from md_helpers import (
     sort_file_tree,
 )
 
-app = Flask(__name__, static_folder=".", static_url_path="")
-
 # Directory containing markdown files
 # MARKDOWN_DIR = "./"  # You can change this to the desired directory path
 MARKDOWN_DIR = os.getenv("DOC_DIR", "../example_dir")
@@ -33,9 +31,12 @@ MARKDOWN_DIR = os.getenv("DOC_DIR", "../example_dir")
 # looked at again in the future though)
 MAGIC_ASSET_URL_PREFIX = "asset0d685bb"
 
+# Instantiate Flask application
+app = Flask(__name__)
+
 
 @app.route(f"/asset/<path:filename>", methods=["GET"])
-def serve_file(filename: str):
+def serve_assets(filename: str):
     # Remove url encoded characters like spaces
     # Necessary as the content of the body is taken from a URL at the client
     filename = unquote(filename)
