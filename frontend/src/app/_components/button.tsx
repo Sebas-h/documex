@@ -175,7 +175,7 @@ const getIcon = (icon: IconType): ReactElement => {
 export function ButtonIcon(props: ButtonIconProps) {
   // See: https://flowbite.com/docs/components/buttons
 
-  const buttonClasses = `p-1 text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-200 font-medium rounded-lg text-sm dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700 z-50`;
+  const buttonClasses = `p-1 text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-200 font-medium rounded-lg text-sm dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700`;
 
   if (!props.href)
     return (
