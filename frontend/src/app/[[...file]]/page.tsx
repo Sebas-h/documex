@@ -28,12 +28,17 @@ export default function Page() {
         html: string;
         headers: OnPageNavigation[];
       };
-      // Create Document with copy button event listeners
+      // Create Document with copy button event listeners attached
       const doc = addEventListenerOnStringHTML(data.html);
-      // Append content doc to Virutal DOM using `ref`
-      Array.from(doc.body.childNodes).forEach((child) => {
-        contentRef?.current?.appendChild(child);
-      });
+      const current = contentRef?.current;
+      if (current) {
+        // Remove existing content
+        current.innerHTML = "";
+        // Append new content of `doc` to Virutal DOM `ref`
+        Array.from(doc.body.childNodes).forEach((child) => {
+          current.appendChild(child);
+        });
+      }
       // Set html content on local state (XXX: this might be redundant?)
       setContent(data.html);
       dispatch({ type: "setSelectedFileHeaders", data: data.headers });
