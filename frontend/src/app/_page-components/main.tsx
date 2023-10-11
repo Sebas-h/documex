@@ -53,7 +53,7 @@ export default function Main({ props }: MainProps) {
     >
       {props.mainContent.type !== Fragment && (
         <>
-          <div className="sticky top-0 float-right">
+          <div className="sticky top-0 float-right z-50">
             <ButtonIcon
               icon="arrow-up"
               onClick={() => props.mdRef?.current?.scrollTo({ top: 0 })}
