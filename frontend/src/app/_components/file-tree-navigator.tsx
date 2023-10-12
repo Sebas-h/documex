@@ -1,6 +1,7 @@
 import { Dispatch, SetStateAction } from "react";
 import { extractDirectoryIds } from "../_helpers/utils";
 import Link from "next/link";
+import { FileIcon, FolderIcon } from "./button";
 
 export type FileTree = FileTreeNode[];
 
@@ -28,7 +29,7 @@ export type IFileTreeNavigatorProps = {
 
   handleFileClick: (file: FileTreeNodeFile) => () => void;
   handleDirClick: (dir: FileTreeNodeDir) => () => void;
-  
+
   pathname: string;
 };
 
@@ -125,7 +126,7 @@ const determineHide = (
 };
 
 const styleClasses = {
-  treeNodePrefix: "select-none text-gray-500 font-mono",
+  treeNodePrefix: "select-none text-gray-600 font-mono",
   treeNode: "hover:bg-sky-700 cursor-pointer",
   treeNodeDir: "cursor-pointer",
   directoryName: "font-bold",
@@ -165,11 +166,9 @@ function RecursiveFileTree({ props }: RecursiveFileTreeProps) {
                 key={`${treeLevel}${nodeIdxOnLevel}`}
                 className={[
                   styleClasses.treeNode,
-                  treeNode.id === props.pathname.slice(1) ? "bg-gray-600" : "",
-                  // props.selectedFile && props.selectedFile.id === treeNode.id
-                  //   ? "bg-gray-600"
-                  //   : "",
+                  treeNode.id === props.pathname.slice(1) ? "bg-gray-500" : "",
                   determineHide(props.nodesToHide, props.directDescendantOf),
+                  "flex flex-row",
                 ].join(" ")}
                 data-name="tree-leaf-node"
                 data-id={treeNode.id}
@@ -177,18 +176,24 @@ function RecursiveFileTree({ props }: RecursiveFileTreeProps) {
               >
                 {treeLevel > 0 && (
                   <span
-                    className={styleClasses.treeNodePrefix}
+                    className={[
+                      styleClasses.treeNodePrefix,
+                      "flex flex-row",
+                    ].join(" ")}
                     data-name="tree-node-prefix"
                   >
                     {prefixGuidelines}
                     {nodeIndicator}
-                    {`─\u00a0`}
+                    {/*<span>─</span>*/}
+                    &nbsp;
+                    {/* <span className="mr-[0.88rem]">─</span> */}
                   </span>
                 )}
                 <span
-                  className={[styleClasses.treeNode].join(" ")}
+                  className={[styleClasses.treeNode, "flex flex-row"].join(" ")}
                   data-name="node-file"
                 >
+                  <FileIcon />
                   {treeNode.name}
                 </span>
               </div>
@@ -213,22 +218,27 @@ function RecursiveFileTree({ props }: RecursiveFileTreeProps) {
               data-name="tree-internal-node"
             >
               <span
-                className="grow hover:bg-sky-700"
+                className="grow hover:bg-sky-700 flex flex-row"
                 onClick={handleDirClick(treeNode)}
                 title={treeNode.name.trim()}
               >
                 <span
-                  className={styleClasses.treeNodePrefix}
+                  className={[
+                    styleClasses.treeNodePrefix,
+                    "flex flex-row items-center",
+                  ].join(" ")}
                   data-name="tree-node-prefix"
                 >
                   {treeLevel > 0 && (
                     <>
                       {prefixGuidelines}
                       {nodeIndicator}
-                      {`\u00a0`}
+                      {/*`\u00a0`*/}
+                      &nbsp;
                     </>
                   )}
-                  {`🗂️\u00a0`}
+                  {/*`🗂️\u00a0`*/}
+                  <FolderIcon />
                 </span>
                 <span
                   className={[
