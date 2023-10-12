@@ -57,7 +57,10 @@ export default function Page() {
         <div className="sticky top-0 float-right z-50">
           <ButtonIcon
             icon="arrow-up"
-            onClick={() => containerRef?.current?.scrollTo({ top: 0 })}
+            onClick={() => {
+              containerRef?.current?.scrollTo({ top: 0 });
+              if (window.location.hash) window.location.hash = "";
+            }}
           />
         </div>
       )}
