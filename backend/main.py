@@ -12,13 +12,13 @@ from flask import (
 from github_emojis import GITHUB_EMOJIS_MARKUP_TO_UNICODE
 from md_helpers import (
     add_ids_to_headers,
+    add_wrapper_and_copy_buttons_to_pre,
     extract_headers_on_page_nav,
     fix_p_in_li_with_checkbox,
     list_markdown_files_fn,
     markdown_to_html,
     modify_image_paths,
     multi_replace,
-    add_copy_buttons_inside_pre,
     sort_file_tree,
 )
 
@@ -128,7 +128,7 @@ def serve_markdown_as_html():
     html_content = fix_p_in_li_with_checkbox(html_content)
 
     # Add copy buttons to <pre lang="LANG"> elements
-    html_content = add_copy_buttons_inside_pre(html_content)
+    html_content = add_wrapper_and_copy_buttons_to_pre(html_content)
 
     # Get headers
     headers = extract_headers_on_page_nav(html_content)

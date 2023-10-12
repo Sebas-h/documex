@@ -46,29 +46,43 @@ body {
 /******************************************************************************/
 /* COPY CODE BLOCK TO CLIPBOARD */
 /******************************************************************************/
-/* Add copy button inside <pre>, should appear in the top-right of the <pre> */
-pre {
+/* Configure positioning and overflow for the div wrapped around the pre, */
+/* the pre and copy button */
+div.pre-code-wrapper {
   position: relative;
 }
+pre {
+  overflow-x: auto;
+}
 button.copy-btn {
-  position: absolute !important;
+  position: absolute;
   top: 0;
-  right: 5px;
+  right: 0;
+
+  /* Aesthetics: */
+  margin: 0.3rem;
+  padding: 0.25rem;
+  background-color: rgb(31 41 55 / var(--tw-bg-opacity));
+  border-radius: 0.5rem;
+}
+button.copy-btn:hover {
+  /* Aesthetics: */
+  background-color: rgb(55 65 81 / var(--tw-bg-opacity));
 }
 /* Add effect to indicate copy to clipboard was successful */
 /* Define the animation */
 @keyframes buttonCopyEffect {
   0% {
-    background-color: initial;
+    background-color: rgb(31 41 55 / var(--tw-bg-opacity));
   }
   15% {
     background-color: green;
   }
   100% {
-    background-color: initial;
+    background-color: rgb(31 41 55 / var(--tw-bg-opacity));
   }
 }
 /* Apply the animation to a class */
 .copy-effect {
-  animation: buttonCopyEffect 2s; /* Adjust the duration as needed */
+  animation: buttonCopyEffect 1.5s; /* Adjust the duration as needed */
 }
